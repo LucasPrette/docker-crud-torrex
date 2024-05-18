@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import type { PageParams } from "~/@types/router";
 import { getMetadata, isValidEntity } from "~/utils/entities";
-import Toolbar from "./components/Toolbar";
-import Table from "./components/Table";
+import Toolbar from "./_components/Toolbar";
+import Table from "./_components/Table";
 import api from "~/api";
-import Title from "../components/Title";
+import Title from "../_components/Title";
 
 interface Params {
   entity: string;

@@ -4,9 +4,9 @@
 // TODO: replace rounded-sm to rounded-md
 
 import { BarChart2 } from "lucide-react";
-import Title from "./components/Title";
+import Title from "./_components/Title";
 import api from "~/api";
-import CounterBox from "./components/CounterBox";
+import CounterBox from "./_components/CounterBox";
 import { StatisticsCounter } from "~/api/statistics";
 import { ENTITIES_TYPES, type Entities } from "~/constants/entities";
 

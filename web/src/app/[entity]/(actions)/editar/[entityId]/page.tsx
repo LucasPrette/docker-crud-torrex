@@ -5,8 +5,8 @@ import { PageParams } from "~/@types/router";
 import api from "~/api";
 import type { Entities } from "~/constants/entities";
 import { getMetadata, isValidEntity } from "~/utils/entities";
-import type { FormProps } from "../../components/Forms/shared/types";
-import Title from "~/app/components/Title";
+import type { FormProps } from "../../_components/Forms/shared/types";
+import Title from "~/app/_components/Title";
 import { isIdentifier } from "~/utils/number";
 
 interface Params {
@@ -15,10 +15,10 @@ interface Params {
 }
 
 const FORMS: Record<Entities, ComponentType<FormProps<any>>> = {
-  employees: dynamic(() => import("../../components/Forms/Employee")),
-  dependents: dynamic(() => import("../../components/Forms/Dependent")),
-  sectors: dynamic(() => import("../../components/Forms/Sector")),
-  units: dynamic(() => import("../../components/Forms/Unit")),
+  employees: dynamic(() => import("../../_components/Forms/Employee")),
+  dependents: dynamic(() => import("../../_components/Forms/Dependent")),
+  sectors: dynamic(() => import("../../_components/Forms/Sector")),
+  units: dynamic(() => import("../../_components/Forms/Unit")),
 };
 
 async function Page({ params }: PageParams<Params>) {

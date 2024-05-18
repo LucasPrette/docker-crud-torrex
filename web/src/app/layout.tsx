@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Header from "./components/Header";
+import Header from "./_components/Header";
 import { twJoin } from "tailwind-merge";
 import "./globals.css";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./_components/Sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 

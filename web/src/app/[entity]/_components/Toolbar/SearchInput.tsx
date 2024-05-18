@@ -1,4 +1,5 @@
 "use client";
+// TODO: create loading state based on transitions API
 
 import { Filter } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
