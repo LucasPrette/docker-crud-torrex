@@ -20,7 +20,7 @@ function SearchInput() {
   }, [query, router, pathname]);
 
   return (
-    <div className="flex rounded-full text-gray-300 ring-1 w-80 ring-zinc-400 px-3 py-2 focus-within:ring-emerald-600 focus-within:ring-2 transition-all items-center text-sm">
+    <div className="flex rounded-full text-gray-300 ring-2 w-80 ring-zinc-400 px-3 py-2 focus-within:ring-emerald-600 focus-within:ring-2 transition-all items-center text-sm">
       <input
         type="text"
         placeholder="Busque por..."

@@ -5,7 +5,7 @@ import { PageParams } from "~/@types/router";
 import api from "~/api";
 import type { Entities } from "~/constants/entities";
 import { getMetadata, isValidEntity } from "~/utils/entities";
-import type { Form } from "../../components/Forms/shared";
+import type { FormProps } from "../../components/Forms/shared/types";
 import Title from "~/app/[entity]/components/Title";
 import { isIdentifier } from "~/utils/number";
 
@@ -14,7 +14,7 @@ interface Params {
   entity: string;
 }
 
-const FORMS: Record<Entities, ComponentType<Form<any>>> = {
+const FORMS: Record<Entities, ComponentType<FormProps<any>>> = {
   employees: dynamic(() => import("../../components/Forms/Employee")),
   dependents: dynamic(() => import("../../components/Forms/Dependent")),
   sectors: dynamic(() => import("../../components/Forms/Sector")),
