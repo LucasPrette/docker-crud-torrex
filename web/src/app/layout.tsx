@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Header from "./components/Header";
+import { twJoin } from "tailwind-merge";
 import "./globals.css";
+import Sidebar from "./components/Sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,9 +19,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={twJoin("bg-zinc-600", inter.className)}>
+      <body
+        className={twJoin(
+          "bg-zinc-900 text-gray-200 h-screen",
+          inter.className
+        )}
+      >
         <Header />
-        {children}
+        <div className="flex">
+          <Sidebar />
+          <main className="py-6 px-10 w-[calc(100vw_-_80px)]">{children}</main>
+        </div>
       </body>
     </html>
   );
