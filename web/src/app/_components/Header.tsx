@@ -1,4 +1,4 @@
-import { AppWindowMac } from "lucide-react";
+import { Handshake } from "lucide-react";
 import NextLink from "next/link";
 
 function Header() {
@@ -6,7 +6,7 @@ function Header() {
     <header className="w-full flex items-center justify-center h-16 px-10 border-b border-b-zinc-600">
       <div className="w-full">
         <NextLink href="/" className="block size-fit">
-          <AppWindowMac size={28} className="text-emerald-600" />
+          <Handshake size={28} className="text-emerald-600" />
         </NextLink>
       </div>
     </header>
