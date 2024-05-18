@@ -5,7 +5,7 @@ import { PageParams } from "~/@types/router";
 import type { Entities } from "~/constants/entities";
 import { getMetadata, isValidEntity } from "~/utils/entities";
 import type { FormProps } from "../components/Forms/shared/types";
-import Title from "~/app/[entity]/components/Title";
+import Title from "~/app/components/Title";
 
 interface Params {
   entityId: string;
