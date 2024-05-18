@@ -8,7 +8,7 @@ type UpdateUnit = Omit<Unit, "id" | "launchDate">;
 const endpoints = {
   create: (data: CreateUnit) => request.post<Unit>("/units", data),
   findAll: () => request.get<Unit[]>("/units"),
-  findById: (id: number) => request.get<Unit>(`/units/${id}`),
+  findById: (id: number) => request.get<Unit | null>(`/units/${id}`),
   update: (id: number, data: UpdateUnit) =>
     request.put<Unit>(`/units/${id}`, data),
   delete: (id: number) => request.delete<void>(`/units/${id}`),

@@ -26,6 +26,10 @@ async function requester<T>(
     const res = await fetch(url, fetchArgs);
     const json = await res.json();
 
+    if (res.status === 404) {
+      return null as T;
+    }
+
     if (!res.ok) {
       throw new Error(json);
     }

@@ -1,18 +1,15 @@
 import { notFound } from "next/navigation";
 import type { PageParams } from "~/@types/router";
-import {
-  ENTITIES_META,
-  type TranslatedEntities,
-  type EntityMeta,
-  Entities,
-} from "~/constants/entities";
-import { isValidEntity } from "~/utils/entities";
+import type { Entities } from "~/constants/entities";
+import { getMetadata, isValidEntity } from "~/utils/entities";
 import Toolbar from "./components/Toolbar";
 import Table from "./components/Table";
 import api from "~/api";
+import Title from "./components/Title";
 
-const getMetadata = (entity: TranslatedEntities) =>
-  ENTITIES_META.find((e) => e.key === entity) as EntityMeta<string>;
+interface Params {
+  entity: string;
+}
 
 const objToTableRow = <T extends object>(
   data: T,
@@ -20,28 +17,21 @@ const objToTableRow = <T extends object>(
 ): (string | number)[] =>
   order.map((key) => (data as Record<string, string | number>)[key]);
 
-async function Page({ params }: PageParams<{ entity: string }>) {
+async function Page({ params }: PageParams<Params>) {
   if (!isValidEntity(params.entity)) {
     return notFound();
   }
 
-  const {
-    icon: Icon,
-    title,
-    domain,
-    columns,
-    translatedColumns,
-  } = getMetadata(params.entity);
+  const { icon, title, domain, columns, translatedColumns } = getMetadata(
+    params.entity
+  );
 
   const data = await api[domain as Entities].findAll();
   const rows = data.map((d) => objToTableRow(d, columns));
 
   return (
     <>
-      <h1 className="flex gap-x-2 text-2xl items-center mb-8">
-        <Icon />
-        {title}
-      </h1>
+      <Title icon={icon}>{title}</Title>
       <Toolbar />
       <Table
         domain={domain}

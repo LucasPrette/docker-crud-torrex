@@ -8,7 +8,7 @@ type UpdateEmployee = Omit<Employee, "id" | "date">;
 const endpoints = {
   create: (data: CreateEmployee) => request.post<Employee>("/employees", data),
   findAll: () => request.get<Employee[]>("/employees"),
-  findById: (id: number) => request.get<Employee>(`/employees/${id}`),
+  findById: (id: number) => request.get<Employee | null>(`/employees/${id}`),
   update: (id: number, data: UpdateEmployee) =>
     request.put<Employee>(`/employees/${id}`, data),
   delete: (id: number) => request.delete<void>(`/employees/${id}`),

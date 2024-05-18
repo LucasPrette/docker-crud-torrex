@@ -9,7 +9,7 @@ const endpoints = {
   create: (data: CreateDependent) =>
     request.post<Dependent>("/dependents", data),
   findAll: () => request.get<Dependent[]>("/dependents"),
-  findById: (id: number) => request.get<Dependent>(`/dependents/${id}`),
+  findById: (id: number) => request.get<Dependent | null>(`/dependents/${id}`),
   update: (id: number, data: UpdateDependent) =>
     request.put<Dependent>(`/dependents/${id}`, data),
   delete: (id: number) => request.delete<void>(`/dependents/${id}`),
