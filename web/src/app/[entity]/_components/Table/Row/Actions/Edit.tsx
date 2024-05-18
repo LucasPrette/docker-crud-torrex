@@ -11,7 +11,7 @@ function Edit({ domain, domainId }: EditProps) {
   return (
     <NextLink
       href={`${domain}/editar/${domainId}`}
-      className="bg-orange-500 inline-block rounded-sm p-1 hover:bg-orange-700 transition-all duration-300"
+      className="bg-orange-500 inline-block rounded-md p-1 hover:bg-orange-700 transition-all duration-300"
       aria-label="Editar"
     >
       <SquarePen size={24} />

@@ -32,7 +32,7 @@ function Delete({ domain, domainId }: DeleteProps) {
         </Suspense>
       )}
       <button
-        className="bg-red-500 inline-block hover:bg-red-700 transition-all duration-300 p-1 rounded-sm"
+        className="bg-red-500 inline-block hover:bg-red-700 transition-all duration-300 p-1 rounded-md"
         onClick={() => {
           setModalOpen(true);
         }}

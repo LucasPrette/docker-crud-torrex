@@ -14,7 +14,7 @@ function Table({ columns, className, domain, rows }: TableProps) {
   return (
     <table
       className={twJoin(
-        "w-full max-w-screen-xl mx-auto table-fixed rounded-sm bg-zinc-950 overflow-hidden",
+        "w-full max-w-screen-xl mx-auto table-fixed rounded-md bg-zinc-950 overflow-hidden",
         className
       )}
     >
