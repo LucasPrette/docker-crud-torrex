@@ -4,6 +4,7 @@ This application is the better way to consume and manipulate the data stored wit
 
 ## Technologies
 
+- Typescript
 - ReactJS
 - NextJS
 - TailwindCSS
@@ -22,7 +23,7 @@ This application is the better way to consume and manipulate the data stored wit
 
 1. Rename the `.example.env` file to `.env` and populate the necessary information
 2. Ensure that the `api` is running
-3. Install the deps running `npm install`
+3. Install the dependencies running `npm install`
 
 ### Starting the project as dev mode
 
@@ -32,7 +33,7 @@ This application is the better way to consume and manipulate the data stored wit
 ### Starting the production build with Docker
 
 1. Build the container image running `docker build -t lutris-web .`
-2. Create a application container running `docker -it -p 3000:3000 lutris-web`
+2. Create an application container running `docker -it -p 3000:3000 lutris-web`
 3. Open a browser of your preference and navigate to `http://localhost:3000/`
 
 ### Starting with the production build
