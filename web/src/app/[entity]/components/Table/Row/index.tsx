@@ -1,19 +1,21 @@
+import type { Entities } from "~/constants/entities";
 import Actions from "./Actions";
 import Item from "./Item";
 
 interface RowProps {
-  id: number;
   data: (string | number)[];
+  domain: Entities;
+  domainId: number;
 }
 
-function Row({ id, data }: RowProps) {
+function Row({ domainId, data, domain }: RowProps) {
   return (
     <tr className="border-t border-t-zinc-700">
       {data.map((d) => (
         <Item key={d}>{d}</Item>
       ))}
       <Item>
-        <Actions id={id} />
+        <Actions domainId={domainId} domain={domain} />
       </Item>
     </tr>
   );

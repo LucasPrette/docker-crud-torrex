@@ -7,25 +7,30 @@ import {
 } from "lucide-react";
 import type { Dependent, Employee, Sector, Unit } from "~/@types/entities";
 
+export type TranslatedEntities =
+  (typeof ENTITIES_TYPES)[keyof typeof ENTITIES_TYPES];
+
 export type Entities = keyof typeof ENTITIES_TYPES;
 
 export type EntityMeta<T> = {
   columns: T[];
   translatedColumns: string[];
   icon: LucideIcon;
-  key: Entities;
+  key: TranslatedEntities;
+  domain: Entities;
   title: string;
 };
 
 export const ENTITIES_TYPES = {
-  dependentes: "dependentes",
-  colaboradores: "colaboradores",
-  setores: "setores",
-  unidades: "unidades",
-};
+  dependents: "dependentes",
+  employees: "colaboradores",
+  sectors: "setores",
+  units: "unidades",
+} as const;
 
 const DEPENDENT_META: EntityMeta<keyof Dependent> = {
   columns: ["id", "name", "birth", "employeeId"],
+  domain: "dependents",
   translatedColumns: ["ID", "Nome", "Aniversário"],
   icon: Baby,
   key: "dependentes",
@@ -34,6 +39,7 @@ const DEPENDENT_META: EntityMeta<keyof Dependent> = {
 
 const EMPLOYEE_META: EntityMeta<keyof Employee> = {
   columns: ["id", "name", "date"],
+  domain: "employees",
   translatedColumns: ["ID", "Nome", "Desde"],
   icon: User,
   key: "colaboradores",
@@ -42,6 +48,7 @@ const EMPLOYEE_META: EntityMeta<keyof Employee> = {
 
 const SECTOR_META: EntityMeta<keyof Sector> = {
   columns: ["id", "name", "launchDate"],
+  domain: "sectors",
   translatedColumns: ["ID", "Nome", "Criado em"],
   icon: PanelsRightBottom,
   key: "setores",
@@ -50,6 +57,7 @@ const SECTOR_META: EntityMeta<keyof Sector> = {
 
 const UNIT_META: EntityMeta<keyof Unit> = {
   columns: ["id", "name", "launchDate"],
+  domain: "units",
   translatedColumns: ["ID", "Nome", "Criado em"],
   icon: Building,
   key: "unidades",

@@ -1,5 +1,4 @@
-import { ENTITIES_TYPES, type Entities } from "~/constants/entities";
+import { ENTITIES_TYPES, type TranslatedEntities } from "~/constants/entities";
 
-export const isValidEntity = (entity: string): entity is Entities =>
-  // @ts-expect-error
-  typeof ENTITIES_TYPES[entity] === "string";
+export const isValidEntity = (entity: any): entity is TranslatedEntities =>
+  Object.values(ENTITIES_TYPES).includes(entity);

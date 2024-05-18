@@ -2,17 +2,25 @@ import { notFound } from "next/navigation";
 import type { PageParams } from "~/@types/router";
 import {
   ENTITIES_META,
-  type Entities,
+  type TranslatedEntities,
   type EntityMeta,
+  Entities,
 } from "~/constants/entities";
 import { isValidEntity } from "~/utils/entities";
 import Toolbar from "./components/Toolbar";
 import Table from "./components/Table";
+import api from "~/api";
 
-const getMetadata = (entity: Entities) =>
+const getMetadata = (entity: TranslatedEntities) =>
   ENTITIES_META.find((e) => e.key === entity) as EntityMeta<string>;
 
-function Page({ params }: PageParams<{ entity: string }>) {
+const objToTableRow = <T extends object>(
+  data: T,
+  order: string[]
+): (string | number)[] =>
+  order.map((key) => (data as Record<string, string | number>)[key]);
+
+async function Page({ params }: PageParams<{ entity: string }>) {
   if (!isValidEntity(params.entity)) {
     return notFound();
   }
@@ -20,9 +28,13 @@ function Page({ params }: PageParams<{ entity: string }>) {
   const {
     icon: Icon,
     title,
+    domain,
     columns,
     translatedColumns,
   } = getMetadata(params.entity);
+
+  const data = await api[domain as Entities].findAll();
+  const rows = data.map((d) => objToTableRow(d, columns));
 
   return (
     <>
@@ -32,13 +44,10 @@ function Page({ params }: PageParams<{ entity: string }>) {
       </h1>
       <Toolbar />
       <Table
+        domain={domain}
         className="mt-4"
         columns={translatedColumns}
-        rows={[
-          [12, "Bauru", new Date().toUTCString()],
-          [13, "Bauru", new Date().toUTCString()],
-          [14, "Bauru", new Date().toUTCString()],
-        ]}
+        rows={rows}
       />
     </>
   );

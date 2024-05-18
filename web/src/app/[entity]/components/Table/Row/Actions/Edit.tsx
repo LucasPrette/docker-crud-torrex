@@ -1,18 +1,16 @@
-"use client";
 import NextLink from "next/link";
 import { SquarePen } from "lucide-react";
-import { usePathname } from "next/navigation";
+import type { Entities } from "~/constants/entities";
 
 interface EditProps {
-  id: number;
+  domain: Entities;
+  domainId: number;
 }
 
-function Edit({ id }: EditProps) {
-  const pathname = usePathname();
-
+function Edit({ domain, domainId }: EditProps) {
   return (
     <NextLink
-      href={`${pathname}/editar/${id}`}
+      href={`${domain}/editar/${domainId}`}
       className="bg-orange-500 inline-block rounded-sm p-1 hover:bg-orange-700 transition-all duration-300"
       aria-label="Editar"
     >
