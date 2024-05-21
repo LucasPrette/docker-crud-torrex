@@ -11,9 +11,11 @@ async function requester<T>(
   method: HttpMethods,
   body?: Body
 ): Promise<T> {
-  const url = process.env.API_URL + endpoint;
+  // TODO: fix it
+  const url = "http://localhost:8080" + endpoint;
+  // const url = process.env.API_URL + endpoint;
   const headers = new Headers();
-  const fetchArgs: RequestInit = { method, headers };
+  const fetchArgs: RequestInit = { method, headers, mode: "no-cors" };
 
   try {
     if (body) {

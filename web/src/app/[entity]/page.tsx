@@ -24,7 +24,6 @@ async function Page({ params }: PageParams<Params>) {
   const { icon, title, domain, columns, translatedColumns } = getMetadata(
     params.entity
   );
-
   const data = await api[domain].findAll();
   const rows = data.map((d) => objToTableRow(d, columns));
 
