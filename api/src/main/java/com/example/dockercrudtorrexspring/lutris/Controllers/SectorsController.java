@@ -41,7 +41,6 @@ public class SectorsController {
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
-    // TODO: verificar tipo do retorno (retornar somente http status)
     @PutMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody Sector sector) throws SQLException {
         var result = this.sectorsServices.findOne(id);
@@ -56,7 +55,6 @@ public class SectorsController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // TODO: verificar tipo do retorno (retornar somente http status)
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int id) throws SQLException {
         var result = this.sectorsServices.findOne(id);

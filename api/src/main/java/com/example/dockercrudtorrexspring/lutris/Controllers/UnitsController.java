@@ -21,7 +21,7 @@ public class UnitsController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<Unit>> getAll(@RequestBody Unit unit) throws SQLException {
+    public ResponseEntity<List<Unit>> getAll() throws SQLException {
         ArrayList<Unit> units = this.unitsServices.getAll();
 
         return new ResponseEntity<>(units, HttpStatus.OK);

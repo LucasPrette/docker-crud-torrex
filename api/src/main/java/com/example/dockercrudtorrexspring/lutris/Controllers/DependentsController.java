@@ -21,7 +21,7 @@ import java.util.List;
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<Dependent>> getAll(@RequestBody Dependent dependent) throws SQLException {
+    public ResponseEntity<List<Dependent>> getAll() throws SQLException {
         ArrayList<Dependent> dependents = this.dependentsServices.getAll();
 
         return new ResponseEntity<>(dependents, HttpStatus.OK);
@@ -42,7 +42,6 @@ import java.util.List;
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
-    // TODO: verificar tipo do retorno (retornar somente http status)
     @PutMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody Dependent dependent) throws SQLException {
         var updateDependent = this.dependentsServices.findOne(id);
@@ -60,7 +59,6 @@ import java.util.List;
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);    
     }
 
-    // TODO: verificar tipo do retorno (retornar somente http status)
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int id) throws SQLException{
         var existingDependent = this.dependentsServices.findOne(id);
