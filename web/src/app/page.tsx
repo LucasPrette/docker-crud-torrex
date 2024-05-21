@@ -1,5 +1,4 @@
 // TODO: create loading states
-// TODO: create custom 404 page
 
 import { BarChart2 } from "lucide-react";
 import Title from "./_components/Title";
