@@ -19,7 +19,6 @@ This section was dedicated to starting the complete project, to start a part sep
 
 - Docker
 - Docker-Compose
-<!-- Java v17 -->
 
 0. Ensure that nothing was running in the ports `1433`, `8080` and `3000`
 
