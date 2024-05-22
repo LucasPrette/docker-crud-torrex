@@ -20,7 +20,7 @@ public final class DatabaseRepository {
     }
 
     Dotenv dotenv = Dotenv.configure()
-            .directory("src\\main\\resources")
+            .directory("api\\src\\main\\resources")
             .filename(".env")
             .load();
 
