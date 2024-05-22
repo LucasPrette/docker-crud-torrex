@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 @RestController
-@RequestMapping("/statistic")
+@RequestMapping("/statistics")
 public class StatisticController {
 
     StatiticService statiticService;
