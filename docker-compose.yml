@@ -1,20 +1,19 @@
-version: "3.9"
-
 services:
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     restart: always
+    platform: linux/amd64
     ports:
       - "1433:1433"
     volumes:
       - lutris:/home/app/db
-      - ./api/seeder.sh:/docker-entrypoint-initdb.d/seeder.sh
-      - ./seeds.sql:/tmp/seeds.sql
-    entrypoint: /bin/bash -c "/docker-entrypoint-initdb.d/seeder.sh && /opt/mssql/bin/sqlservr"
+      - ./api/src/sql:/tmp
+      - ./api/seeder.sh:/tmp/seeder.sh
     environment:
       # TODO: change to use .env
       MSSQL_USER: docker
-      MSSQL_PASSWORD: password
+      MSSQL_PASSWORD: "yourStrong(!)Password"
+      MSSQL_SA_PASSWORD: "yourStrong(!)Password"
       ACCEPT_EULA: Y
 
   api:

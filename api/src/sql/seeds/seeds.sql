@@ -1,4 +1,3 @@
--- Inserir registros nas tabelas de setores (sectors)
 INSERT INTO sectors (nameSector, launchDate)
 VALUES 
     ('Financeiro', '1990-02-15'),
@@ -12,7 +11,6 @@ VALUES
     ('Jurídico', '2010-10-22'),
     ('Qualidade', '2013-12-05');
 
--- Inserir registros nas tabelas de unidades (units)
 INSERT INTO units (city, launchDate)
 VALUES 
     ('São Paulo', '1988-01-01'),
@@ -26,7 +24,6 @@ VALUES
     ('Porto Alegre', '2009-07-02'),
     ('Manaus', '2012-11-22');
 
--- Inserir registros nas tabelas de funcionários (employees)
 INSERT INTO employees (nameEmployee, birth, idSector, idUnit)
 VALUES 
     ('João Silva', '1980-05-20', 1, 1),
@@ -40,7 +37,7 @@ VALUES
     ('Juliana Lima', '1989-06-08', 9, 9),
     ('Gabriel Martins', '1995-08-03', 10, 10);
 
--- Inserir registros nas tabelas de dependentes (dependents)
+
 INSERT INTO dependents (nameDependent, birth, idEmployee)
 VALUES 
     ('Pedro Silva', '2010-03-05', 1),
