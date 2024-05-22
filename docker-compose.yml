@@ -8,10 +8,15 @@ services:
       - "1433:1433"
     volumes:
       - lutris:/home/app/db
+      - ./api/seeder.sh:/docker-entrypoint-initdb.d/seeder.sh
+      - ./seeds.sql:/tmp/seeds.sql
+    entrypoint: /bin/bash -c "/docker-entrypoint-initdb.d/seeder.sh && /opt/mssql/bin/sqlservr"
     environment:
+      # TODO: change to use .env
       MSSQL_USER: docker
       MSSQL_PASSWORD: password
       ACCEPT_EULA: Y
+
   api:
     build:
       context: ./api
