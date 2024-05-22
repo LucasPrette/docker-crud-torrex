@@ -21,7 +21,7 @@ import java.util.List;
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<Dependent>> getAll(@RequestBody Dependent dependent) throws SQLException {
+    public ResponseEntity<List<Dependent>> getAll() throws SQLException {
         ArrayList<Dependent> dependents = this.dependentsServices.getAll();
 
         return new ResponseEntity<>(dependents, HttpStatus.OK);
@@ -42,30 +42,28 @@ import java.util.List;
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
-    // TODO: verificar tipo do retorno (retornar somente http status)
-    @PutMapping("/{id}")
-    public ResponseEntity<Dependent> update(@PathVariable("id") int id, @RequestBody Dependent dependent) throws SQLException {
+    @PutMapping(value = "/{id}", produces = "application/json")
+    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody Dependent dependent) throws SQLException {
         var updateDependent = this.dependentsServices.findOne(id);
 
         if(updateDependent == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     
-        updateDependent.setName(updateDependent.getName());
-        updateDependent.setBirth(updateDependent.getBirth());
-        updateDependent.setIdEmployee(updateDependent.getIdEmployee());
+        updateDependent.setName(dependent.getName());
+        updateDependent.setBirth(dependent.getBirth());
+        updateDependent.setIdEmployee(dependent.getIdEmployee());
 
         dependentsServices.update(updateDependent);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);    
     }
 
-    // TODO: verificar tipo do retorno (retornar somente http status)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Dependent> delete(@PathVariable("id") int id) throws SQLException{
-        Dependent existingDependent = this.dependentsServices.findOne(id);
+    public ResponseEntity<?> delete(@PathVariable("id") int id) throws SQLException{
+        var existingDependent = this.dependentsServices.findOne(id);
 
-        if(existingDependent != null) {
+        if(existingDependent == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
