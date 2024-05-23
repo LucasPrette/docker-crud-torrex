@@ -11,10 +11,6 @@ public final class DatabaseRepository {
     private static DatabaseRepository instance;
     private Connection connection;
 
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-
     public Connection getConnection() {
         return this.connection;
     }
@@ -29,25 +25,25 @@ public final class DatabaseRepository {
     }
 
     private Connection createConnection() throws NoSuchAlgorithmException {
+        Connection connection = null;
 
-        System.out.println("Creating SQL Server Database Connection: ");
-        Connection connection;
         try{
             //provide java database driver
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String ConnectionURL = dotenv.get("DATABASE_URL");
-            connection = DriverManager.getConnection(ConnectionURL);
 
-            setConnection(connection);
+            String connectionUrl = dotenv.get("DATABASE_URL");
+            connection = DriverManager.getConnection(connectionUrl);
+
+            this.connection = connection;
             
         } catch(Exception e) {
             e.printStackTrace();
-            return null;
         }
 
-        if(connection != null) {
+        if (connection != null) {
             System.out.println("Connection created successfully...");
         }
+
         return connection;
     }
 
