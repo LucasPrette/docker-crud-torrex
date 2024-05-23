@@ -21,53 +21,75 @@ public class UnitsController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<Unit>> getAll() throws SQLException {
-        ArrayList<Unit> units = this.unitsServices.getAll();
+    public ResponseEntity<List<Unit>> getAll() {
 
-        return new ResponseEntity<>(units, HttpStatus.OK);
+        try{
+            ArrayList<Unit> units = this.unitsServices.getAll();
+
+            return new ResponseEntity<>(units, HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
     @GetMapping(path ="/{id}", produces = "application/json")
-    public ResponseEntity<Unit> findOne(@PathVariable("id") int id) throws SQLException {
+    public ResponseEntity<Unit> findOne(@PathVariable("id") int id) {
+        try{
+            var result = this.unitsServices.findOne(id);
 
-        var result = this.unitsServices.findOne(id);
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<Unit> create(@RequestBody Unit unit) throws SQLException {
-        var result = this.unitsServices.create(unit);
+    public ResponseEntity<Unit> create(@RequestBody Unit unit) {
 
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+        try{
+            var result = this.unitsServices.create(unit);
+
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
     @PutMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody Unit unit) throws SQLException {
-        var result = this.unitsServices.findOne(id);
+    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody Unit unit) {
 
-        if(result == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        result.setName(unit.getName());
+        try{
+            var result = this.unitsServices.findOne(id);
 
-        this.unitsServices.update(result);
+            if(result == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            result.setName(unit.getName());
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            this.unitsServices.update(result);
+
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") int id) throws SQLException {
-        var result = this.unitsServices.findOne(id);
+    public ResponseEntity<?> delete(@PathVariable("id") int id) {
+        try{
+            var result = this.unitsServices.findOne(id);
 
-        if(result == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+            if(result == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
 
-        this.unitsServices.delete(id);
-        
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            this.unitsServices.delete(id);
+
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
