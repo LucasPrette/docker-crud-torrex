@@ -19,7 +19,7 @@ const counterToBox = (counter: StatisticsCounter) => {
 };
 
 async function Home() {
-  const counter = await api.statistics.counter();
+  const counter = await api.statistics.count();
 
   return (
     <>
