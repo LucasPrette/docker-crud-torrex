@@ -1,4 +1,3 @@
-# FROM openjdk:20
 FROM maven:3.9.6-sapmachine-17
 WORKDIR /app
 COPY . .

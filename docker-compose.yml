@@ -1,30 +1,35 @@
 services:
   db:
+    container_name: lutris-db
     image: mcr.microsoft.com/mssql/server:2022-latest
     restart: always
     platform: linux/amd64
     ports:
       - "1433:1433"
     volumes:
-      - lutris:/home/app/db
+      - lutris:/var/opt/mssql
       - ./api/src/sql:/tmp
       - ./api/seeder.sh:/tmp/seeder.sh
     environment:
-      # TODO: change to use .env
-      MSSQL_USER: docker
-      MSSQL_PASSWORD: "yourStrong(!)Password"
-      MSSQL_SA_PASSWORD: "yourStrong(!)Password"
+      MSSQL_SA_PASSWORD: yourStrong(!)Password
       ACCEPT_EULA: Y
+    networks:
+      - dev
 
   api:
+    container_name: lutris-api
     build:
       context: ./api
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    networks:
+      - dev
     depends_on:
       - db
+
   web:
+    container_name: lutris-web
     build:
       context: ./web
       dockerfile: Dockerfile
@@ -35,3 +40,7 @@ services:
 
 volumes:
   lutris:
+
+networks:
+  dev:
+    driver: bridge
