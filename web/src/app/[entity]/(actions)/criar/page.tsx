@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { type ComponentType } from "react";
 import { PageParams } from "~/@types/router";
 import type { Entities } from "~/constants/entities";
-import { getMetadata, isValidEntity } from "~/utils/entities";
+import { getMetadata, isValidEntity } from "~/utils/entity";
 import type { FormProps } from "../_components/Forms/shared/types";
 import Title from "~/app/_components/Title";
 

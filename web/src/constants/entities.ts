@@ -6,6 +6,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { Dependent, Employee, Sector, Unit } from "~/@types/entities";
+import { formatBRLDateTime } from "~/utils/date";
 
 export type TranslatedEntities =
   (typeof ENTITIES_TYPES)[keyof typeof ENTITIES_TYPES];
@@ -27,6 +28,41 @@ export const ENTITIES_TYPES = {
   sectors: "setores",
   units: "unidades",
 } as const;
+
+export const FORMATTERS = {
+  dependents: (data: object): Dependent => {
+    const d = data as Dependent;
+
+    return {
+      ...d,
+      birth: formatBRLDateTime(d.birth),
+    };
+  },
+  employees: (data: object): Employee => {
+    const d = data as Employee;
+
+    return {
+      ...d,
+      date: formatBRLDateTime(d.date),
+    };
+  },
+  sectors: (data: object): Sector => {
+    const d = data as Sector;
+
+    return {
+      ...d,
+      launchDate: formatBRLDateTime(d.launchDate),
+    };
+  },
+  units: (data: object): Unit => {
+    const d = data as Unit;
+
+    return {
+      ...d,
+      launchDate: formatBRLDateTime(d.launchDate),
+    };
+  },
+};
 
 const DEPENDENT_META: EntityMeta<keyof Dependent> = {
   columns: ["id", "name", "birth", "employeeId"],

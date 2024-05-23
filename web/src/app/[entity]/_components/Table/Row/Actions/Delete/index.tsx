@@ -17,7 +17,8 @@ function Delete({ domain, domainId }: DeleteProps) {
   const [isModalOpen, setModalOpen] = useState(false);
 
   async function afterConfirm() {
-    await api[domain].delete(domainId);
+    api[domain].delete(domainId);
+    // await api[domain].delete(domainId);
   }
 
   function onClose() {

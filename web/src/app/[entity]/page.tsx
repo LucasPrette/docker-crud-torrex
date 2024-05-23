@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
 import type { PageParams } from "~/@types/router";
-import { getMetadata, isValidEntity } from "~/utils/entities";
+import { getMetadata, isValidEntity } from "~/utils/entity";
 import Toolbar from "./_components/Toolbar";
 import Table from "./_components/Table";
 import api from "~/api";
 import Title from "../_components/Title";
+import { FORMATTERS } from "~/constants/entities";
 
 interface Params {
   entity: string;
@@ -24,8 +25,9 @@ async function Page({ params }: PageParams<Params>) {
   const { icon, title, domain, columns, translatedColumns } = getMetadata(
     params.entity
   );
+  const formatter = FORMATTERS[domain];
   const data = await api[domain].findAll();
-  const rows = data.map((d) => objToTableRow(d, columns));
+  const rows = data.map((d) => objToTableRow(formatter(d), columns));
 
   return (
     <>
