@@ -26,10 +26,12 @@ This section was dedicated to starting the complete project, to start a part sep
 
 2. Go to `api/` and rename the `.example.env` file to `.env` and populate the necessary information
 
-3. In the root directory, run `docker-compose up -d`
+3. In the root directory, run `docker-compose up -d --build --always-recreate-deps`
 
-4. You can access the database by accessing the `1433` from your local
+4. Run the necessary migrations and seeds accessing the database container with `docker exec -it lutris-db /bin/bash`, then running `./tmp/migrations/migrator.sh` and then `/tmp/seeds/seeder.sh`
 
-5. You can access the API by accessing the `8080` from your local
+5. You can access the database by accessing the `1433` from your local
 
-6. You can access the web by accessing the `3000` from your local
+6. You can access the API by accessing the `8080` from your local
+
+7. You can access the web by accessing the `3000` from your local

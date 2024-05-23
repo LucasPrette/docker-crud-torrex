@@ -18,7 +18,7 @@ async function requester<T>({
   body,
 }: RequesterInput): Promise<T> {
   // TODO: fix it
-  const url = "http://localhost:8080" + endpoint;
+  const url = "http://192.168.3.31:8080" + endpoint;
   // const url = process.env.API_URL + endpoint;
   const headers = new Headers();
   const fetchArgs: RequestInit = {

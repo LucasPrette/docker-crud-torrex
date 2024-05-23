@@ -13,7 +13,7 @@ services:
       MSSQL_SA_PASSWORD: yourStrong(!)Password
       ACCEPT_EULA: Y
     networks:
-      - dev
+      - lutris-net
 
   api:
     container_name: lutris-api
@@ -23,23 +23,25 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - dev
+      - lutris-net
     depends_on:
       - db
 
-  # web:
-  #   container_name: lutris-web
-  #   build:
-  #     context: ./web
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - api
+  web:
+    container_name: lutris-web
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - lutris-net
 
 volumes:
   lutris:
 
 networks:
-  dev:
+  lutris-net:
     driver: bridge
