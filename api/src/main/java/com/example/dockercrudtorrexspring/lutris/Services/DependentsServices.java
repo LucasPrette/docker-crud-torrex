@@ -9,35 +9,40 @@ import java.util.ArrayList;
 
 public class DependentsServices {
 
-    DatabaseRepository databaseRepository;
+    Connection connection;
+
     public DependentsServices() throws NoSuchAlgorithmException {
-        this.databaseRepository = DatabaseRepository.getInstance();
+        this.connection = DatabaseRepository.getInstance().getConnection();
     }
 
     public Dependent create(Dependent dependent) throws SQLException {
-        String sql = "INSERT INTO dependents (nameDependent, birth, idEmployee) VALUES (?,?,?);";
-        PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
-        stm.setString(1,dependent.getName());
+        String sql = "INSERT INTO dependents (nameDependent, birth, idEmployee) OUTPUT INSERTED.idDependent VALUES (?,?,?);";
+        PreparedStatement stm = this.connection.prepareStatement(sql);
+        stm.setString(1, dependent.getName());
         stm.setString(2, dependent.getBirth());
         stm.setInt(3, dependent.getIdEmployee());
 
-        int rowsInserted = stm.executeUpdate();
+        ResultSet resultSet = stm.executeQuery();
 
-        if(rowsInserted > 0) {
-            System.out.println("Dependent Successfully Inserted");
-            return new Dependent(dependent.getId(), dependent.getName(), dependent.getBirth(), dependent.getIdEmployee());
+        if (resultSet == null) {
+            return null;
         }
-        return null;
+        resultSet.next();
+        System.out.println("Dependent Successfully Inserted");
+
+        int id = resultSet.getInt("idDependent");
+
+        return new Dependent(id, dependent.getName(), dependent.getBirth(), dependent.getIdEmployee());
     }
 
     public ArrayList<Dependent> getAll() throws SQLException {
         ArrayList<Dependent> dependents = new ArrayList<>();
 
-        Statement statement = databaseRepository.getConnection().createStatement();
+        Statement statement = this.connection.createStatement();
         String consult = "SELECT * FROM dependents;";
         ResultSet result = statement.executeQuery(consult);
 
-        while(result.next()) {
+        while (result.next()) {
             int id = result.getInt("idDependent");
             String name = result.getString("nameDependent");
             String birth = result.getString("birth");
@@ -47,9 +52,9 @@ public class DependentsServices {
         return dependents;
     }
 
-    public Dependent findOne(int id) throws SQLException{
+    public Dependent findOne(int id) throws SQLException {
         String sql = "SELECT * FROM dependents WHERE idDependent = " + id;
-        Statement statement = databaseRepository.getConnection().createStatement();
+        Statement statement = this.connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
         if (!resultSet.next()) {
@@ -60,12 +65,12 @@ public class DependentsServices {
         String resultBirth = resultSet.getString("birth");
         int resultIdEmp = resultSet.getInt("idEmployee");
 
-        return new Dependent(resultId, resultName,resultBirth,resultIdEmp);
+        return new Dependent(resultId, resultName, resultBirth, resultIdEmp);
     }
 
     public void update(Dependent dependent) throws SQLException {
-        String sql ="UPDATE dependents SET nameDependent = ?, birth = ?, idEmployee = ? WHERE idDependent = ?";
-        PreparedStatement stm = this.databaseRepository.getConnection().prepareStatement(sql);
+        String sql = "UPDATE dependents SET nameDependent = ?, birth = ?, idEmployee = ? WHERE idDependent = ?";
+        PreparedStatement stm = this.connection.prepareStatement(sql);
         stm.setString(1, dependent.getName());
         stm.setString(2, dependent.getBirth());
         stm.setInt(3, dependent.getIdEmployee());
@@ -73,9 +78,9 @@ public class DependentsServices {
         stm.executeUpdate();
     }
 
-    public void delete(int id) throws SQLException{
+    public void delete(int id) throws SQLException {
         String sql = "DELETE FROM dependents WHERE idDependent = " + id;
-        PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
+        PreparedStatement stm = this.connection.prepareStatement(sql);
         stm.executeUpdate();
     }
 }

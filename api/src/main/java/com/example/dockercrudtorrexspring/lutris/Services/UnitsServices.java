@@ -4,41 +4,39 @@ import com.example.dockercrudtorrexspring.lutris.Entities.Unit;
 import com.example.dockercrudtorrexspring.lutris.Repositories.DatabaseRepository;
 
 import java.security.NoSuchAlgorithmException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class UnitsServices {
 
-    DatabaseRepository databaseRepository;
+    Connection connection;
 
     public UnitsServices() throws NoSuchAlgorithmException {
-        databaseRepository = DatabaseRepository.getInstance();
+        this.connection = DatabaseRepository.getInstance().getConnection();
     }
 
     public Unit create(Unit unit) throws SQLException {
-        String sql = "insert into units (city, launchDate) values (?, GETDATE());";
-        PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
+        String sql = "insert into units (city, launchDate) OUTPUT INSERTED.idUnit, INSERTED.launchDate values (?, GETDATE());";
+        PreparedStatement stm = this.connection.prepareStatement(sql);
         stm.setString(1, unit.getName());
 
-        int rowsInsert = stm.executeUpdate();
+        ResultSet resultSet = stm.executeQuery();
 
-        if(rowsInsert > 0) {
-            System.out.println("Successfully inserted");
-            return new Unit(unit.getId(), unit.getName(), unit.getLaunchDate());
+        if(resultSet == null) {
+            return unit;
         }
+        resultSet.next();
+        int id = resultSet.getInt("idUnit");
+        String date = resultSet.getString("launchDate");
 
-        // TODO: return unit with complete data populated (id, createdAt, ...)
-        return unit;
+        return new Unit(id, unit.getName(), date);
     }
 
     public ArrayList<Unit> getAll() throws SQLException {
         ArrayList<Unit> units = new ArrayList<>();
 
         String sql = "SELECT * FROM units";
-        Statement statement = databaseRepository.getConnection().createStatement();
+        Statement statement = this.connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
         while(resultSet.next()) {
@@ -54,7 +52,7 @@ public class UnitsServices {
 
     public Unit findOne(int id) throws SQLException {
         String sql = "SELECT * FROM units WHERE idUnit = " + id;
-        Statement statement = databaseRepository.getConnection().createStatement();
+        Statement statement = this.connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
         if(!resultSet.next()) {
@@ -69,13 +67,13 @@ public class UnitsServices {
 
     public void update(Unit unit) throws SQLException{
         String sql = "UPDATE units SET city = " + " ' " + unit.getName() +" ' " + "  WHERE idUnit = " + unit.getId() ;
-        PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
+        PreparedStatement stm = this.connection.prepareStatement(sql);
         stm.executeUpdate();
     }
 
     public void delete(int id) throws SQLException {
         String sql = "DELETE FROM units WHERE idUnit = " + id;
-        PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
+        PreparedStatement stm = this.connection.prepareStatement(sql);
         stm.executeUpdate();
     }
 }
