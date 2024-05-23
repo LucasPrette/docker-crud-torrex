@@ -12,11 +12,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
-public class EmployeeController {
+public class EmployeesController {
 
     EmployeesServices employeesServices;
 
-    public EmployeeController() throws NoSuchAlgorithmException {
+    public EmployeesController() throws NoSuchAlgorithmException {
         this.employeesServices = new EmployeesServices();
     }
 

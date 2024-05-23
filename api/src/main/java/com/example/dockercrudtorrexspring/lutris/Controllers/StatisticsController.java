@@ -2,7 +2,7 @@ package com.example.dockercrudtorrexspring.lutris.Controllers;
 
 
 import com.example.dockercrudtorrexspring.lutris.Entities.Statistic;
-import com.example.dockercrudtorrexspring.lutris.Services.StatiticService;
+import com.example.dockercrudtorrexspring.lutris.Services.StatisticsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,22 +14,19 @@ import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/statistics")
-public class StatisticController {
+public class StatisticsController {
 
-    StatiticService statiticService;
+    StatisticsService statisticService;
 
-    public StatisticController() throws NoSuchAlgorithmException {
-        this.statiticService = new StatiticService();
+    public StatisticsController() throws NoSuchAlgorithmException {
+        this.statisticService = new StatisticsService();
 
     }
 
     @GetMapping(path = "/count", produces = "application/json")
     public ResponseEntity<Statistic> countAll() throws SQLException {
-        var result = this.statiticService.countAllData();
+        var result = this.statisticService.countAllData();
 
-        if(result == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
