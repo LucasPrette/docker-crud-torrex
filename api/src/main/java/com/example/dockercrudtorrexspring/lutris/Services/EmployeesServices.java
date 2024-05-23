@@ -4,43 +4,47 @@ import com.example.dockercrudtorrexspring.lutris.Entities.Employee;
 import com.example.dockercrudtorrexspring.lutris.Repositories.DatabaseRepository;
 
 import java.security.NoSuchAlgorithmException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class EmployeesServices {
-    DatabaseRepository databaseRepository;
 
+    Connection connection;
     public EmployeesServices() throws NoSuchAlgorithmException {
-         databaseRepository = DatabaseRepository.getInstance();
+         this.connection = DatabaseRepository.getInstance().getConnection();
+
     }
 
 
     public Employee create(Employee employee) throws SQLException {
-        String sql = "INSERT INTO employees (nameEmployee, birth, idSector, idUnit) VALUES (?,?,?,?);";
-        PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
+        String sql = "INSERT INTO employees (nameEmployee, birth, idSector, idUnit) OUTPUT INSERTED.idEmployee VALUES (?,?,?,?);";
+        PreparedStatement stm = this.connection.prepareStatement(sql);
         stm.setString(1, employee.getName());
         stm.setString(2, employee.getDate());
         stm.setInt(3, employee.getIdSector());
         stm.setInt(4, employee.getIdUnit());
 
-        int rowsInserted = stm.executeUpdate();
+        ResultSet resultSet = stm.executeQuery();
 
-        if(rowsInserted > 0) {
-            System.out.println("Employee successfully inserted...");
-            return new Employee(employee.getId(), employee.getName(), employee.getDate(),
-                    employee.getIdSector(), employee.getIdUnit());
+        if(resultSet == null) {
+            return null;
         }
-        return null;
+        System.out.println("Employee successfully inserted...");
+        resultSet.next();
+
+        int id = resultSet.getInt("idEmployee");
+        employee.setId(id);
+
+        return new Employee(employee.getId(), employee.getName(), employee.getDate(),
+                employee.getIdSector(), employee.getIdUnit());
+
     }
 
     public ArrayList<Employee> getAll() throws SQLException{
         ArrayList<Employee> employees = new ArrayList<>();
 
         String sql = "SELECT * FROM employees";
-        Statement statement = databaseRepository.getConnection().createStatement();
+        Statement statement = this.connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
         while(resultSet.next()) {
@@ -58,7 +62,7 @@ public class EmployeesServices {
 
     public Employee findOne(int id) throws SQLException{
         String sql = "SELECT * FROM employees WHERE idEmployee = " + id;
-        Statement statement = databaseRepository.getConnection().createStatement();
+        Statement statement = this.connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
         if(!resultSet.next()) {
@@ -75,7 +79,7 @@ public class EmployeesServices {
 
     public void update(Employee employee) throws SQLException {
         String sql = " UPDATE employees SET nameEmployee = "+"'"+ employee.getName() +"'" +", idUnit = ?, idSector = ? WHERE idEmployee = ? ";
-        PreparedStatement stm = this.databaseRepository.getConnection().prepareStatement(sql);
+        PreparedStatement stm = this.connection.prepareStatement(sql);
         stm.setInt(1, employee.getIdSector());
         stm.setInt(2, employee.getIdUnit());
         stm.setInt(3, employee.getId());
@@ -86,7 +90,7 @@ public class EmployeesServices {
 
     public void delete(int id) throws SQLException{
         String sql = "DELETE FROM employees WHERE idEmployee = " + id;
-        PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
+        PreparedStatement stm = this.connection.prepareStatement(sql);
         
         stm.executeUpdate();
     }
