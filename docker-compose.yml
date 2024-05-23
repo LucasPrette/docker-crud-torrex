@@ -9,7 +9,6 @@ services:
     volumes:
       - lutris:/var/opt/mssql
       - ./api/src/sql:/tmp
-      - ./api/seeder.sh:/tmp/seeder.sh
     environment:
       MSSQL_SA_PASSWORD: yourStrong(!)Password
       ACCEPT_EULA: Y
@@ -28,15 +27,15 @@ services:
     depends_on:
       - db
 
-  web:
-    container_name: lutris-web
-    build:
-      context: ./web
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    depends_on:
-      - api
+  # web:
+  #   container_name: lutris-web
+  #   build:
+  #     context: ./web
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - api
 
 volumes:
   lutris:
