@@ -28,10 +28,8 @@ public class UnitsServices {
         resultSet.next();
         int id = resultSet.getInt("idUnit");
         String date = resultSet.getString("launchDate");
-        unit.setId(id);
-        unit.setLaunchDate(date);
 
-        return new Unit(unit.getId(), unit.getName(), unit.getLaunchDate());
+        return new Unit(id, unit.getName(), date);
     }
 
     public ArrayList<Unit> getAll() throws SQLException {

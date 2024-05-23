@@ -25,13 +25,13 @@ public class StatisticsController {
 
     @GetMapping(path = "/count", produces = "application/json")
     public ResponseEntity<Statistic> countAll() throws SQLException {
-        try{
+        try {
             var result = this.statisticService.countAllData();
-
             return new ResponseEntity<>(result, HttpStatus.OK);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

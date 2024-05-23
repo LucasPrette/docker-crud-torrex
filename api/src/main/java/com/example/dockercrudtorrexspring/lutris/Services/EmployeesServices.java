@@ -10,8 +10,9 @@ import java.util.ArrayList;
 public class EmployeesServices {
 
     Connection connection;
+
     public EmployeesServices() throws NoSuchAlgorithmException {
-         this.connection = DatabaseRepository.getInstance().getConnection();
+        this.connection = DatabaseRepository.getInstance().getConnection();
 
     }
 
@@ -26,28 +27,27 @@ public class EmployeesServices {
 
         ResultSet resultSet = stm.executeQuery();
 
-        if(resultSet == null) {
+        if (resultSet == null) {
             return null;
         }
         System.out.println("Employee successfully inserted...");
         resultSet.next();
 
         int id = resultSet.getInt("idEmployee");
-        employee.setId(id);
 
-        return new Employee(employee.getId(), employee.getName(), employee.getDate(),
+        return new Employee(id, employee.getName(), employee.getDate(),
                 employee.getIdSector(), employee.getIdUnit());
 
     }
 
-    public ArrayList<Employee> getAll() throws SQLException{
+    public ArrayList<Employee> getAll() throws SQLException {
         ArrayList<Employee> employees = new ArrayList<>();
 
         String sql = "SELECT * FROM employees";
         Statement statement = this.connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
-        while(resultSet.next()) {
+        while (resultSet.next()) {
             int idE = resultSet.getInt("idEmployee");
             String name = resultSet.getString("nameEmployee");
             String birth = resultSet.getString("birth");
@@ -60,12 +60,12 @@ public class EmployeesServices {
         return employees;
     }
 
-    public Employee findOne(int id) throws SQLException{
+    public Employee findOne(int id) throws SQLException {
         String sql = "SELECT * FROM employees WHERE idEmployee = " + id;
         Statement statement = this.connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
-        if(!resultSet.next()) {
+        if (!resultSet.next()) {
             return null;
         }
         int idE = resultSet.getInt("idEmployee");
@@ -78,7 +78,7 @@ public class EmployeesServices {
     }
 
     public void update(Employee employee) throws SQLException {
-        String sql = " UPDATE employees SET nameEmployee = "+"'"+ employee.getName() +"'" +", idUnit = ?, idSector = ? WHERE idEmployee = ? ";
+        String sql = " UPDATE employees SET nameEmployee = " + "'" + employee.getName() + "'" + ", idUnit = ?, idSector = ? WHERE idEmployee = ? ";
         PreparedStatement stm = this.connection.prepareStatement(sql);
         stm.setInt(1, employee.getIdSector());
         stm.setInt(2, employee.getIdUnit());
@@ -88,10 +88,10 @@ public class EmployeesServices {
 
     }
 
-    public void delete(int id) throws SQLException{
+    public void delete(int id) throws SQLException {
         String sql = "DELETE FROM employees WHERE idEmployee = " + id;
         PreparedStatement stm = this.connection.prepareStatement(sql);
-        
+
         stm.executeUpdate();
     }
 }

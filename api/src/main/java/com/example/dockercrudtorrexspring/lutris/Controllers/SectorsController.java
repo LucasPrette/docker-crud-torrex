@@ -22,42 +22,45 @@ public class SectorsController {
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<Sector>> getAll() {
-        try{
+        try {
             ArrayList<Sector> sectors = this.sectorsServices.getAll();
 
             return new ResponseEntity<>(sectors, HttpStatus.OK);
-        }catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<Sector> findOne(@PathVariable("id") int id) {
-        try{
+        try {
             var result = this.sectorsServices.findOne(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<Sector> create(@RequestBody Sector sector){
-        try{
+    public ResponseEntity<Sector> create(@RequestBody Sector sector) {
+        try {
             var result = this.sectorsServices.create(sector);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody Sector sector) {
-        try{
+        try {
             var result = this.sectorsServices.findOne(id);
 
-            if(result == null) {
+            if (result == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             result.setName(sector.getName());
@@ -65,24 +68,26 @@ public class SectorsController {
             this.sectorsServices.update(result);
 
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int id) {
-        try{
+        try {
             var result = this.sectorsServices.findOne(id);
 
-            if(result == null) {
+            if (result == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
             this.sectorsServices.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

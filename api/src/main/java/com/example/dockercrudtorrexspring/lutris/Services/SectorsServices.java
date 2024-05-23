@@ -23,7 +23,7 @@ public class SectorsServices {
 
         ResultSet resultSet = stm.executeQuery();
 
-        if(resultSet == null) {
+        if (resultSet == null) {
             return null;
         }
         System.out.println("Sector inserted successfully...");
@@ -31,20 +31,19 @@ public class SectorsServices {
 
         int id = resultSet.getInt("idSector");
         String date = resultSet.getString("launchDate");
-        sector.setId(id);
-        sector.setLaunchDate(date);
-        return new Sector(sector.getId(), sector.getName(), sector.getLaunchDate());
+
+        return new Sector(id, sector.getName(), date);
 
     }
 
-    public ArrayList<Sector> getAll() throws SQLException{
+    public ArrayList<Sector> getAll() throws SQLException {
         ArrayList<Sector> sectors = new ArrayList<>();
 
         String sql = "SELECT * FROM sectors";
         Statement statement = this.connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
-        while(resultSet.next()) {
+        while (resultSet.next()) {
             int id = resultSet.getInt("idSector");
             String name = resultSet.getString("nameSector");
             String launchDate = resultSet.getString("launchDate");
@@ -60,7 +59,7 @@ public class SectorsServices {
         Statement statement = this.connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
-        if(!resultSet.next()){
+        if (!resultSet.next()) {
             return null;
         }
         int idU = resultSet.getInt("idSector");
@@ -71,12 +70,12 @@ public class SectorsServices {
     }
 
     public void update(Sector sector) throws SQLException {
-        String sql = "UPDATE sectors SET nameSector = " + " '" + sector.getName() + "' " +" WHERE idSector = " + sector.getId();
+        String sql = "UPDATE sectors SET nameSector = " + " '" + sector.getName() + "' " + " WHERE idSector = " + sector.getId();
         PreparedStatement stm = this.connection.prepareStatement(sql);
         stm.executeUpdate();
     }
 
-    public void delete(int id) throws SQLException{
+    public void delete(int id) throws SQLException {
         String sql = "DELETE FROM sectors WHERE idSector = " + id;
         PreparedStatement stm = this.connection.prepareStatement(sql);
         stm.executeUpdate();

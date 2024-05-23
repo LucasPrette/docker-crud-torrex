@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/dependents")
- public class DependentsController {
+public class DependentsController {
 
     DependentsServices dependentsServices;
 
@@ -22,23 +22,25 @@ import java.util.List;
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<Dependent>> getAll() {
-        try{
+        try {
             ArrayList<Dependent> dependents = this.dependentsServices.getAll();
             return new ResponseEntity<>(dependents, HttpStatus.OK);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
-    @GetMapping(path="/{id}", produces = "application/json")
-    public ResponseEntity<Dependent> findOne(@PathVariable("id") int id){
+    @GetMapping(path = "/{id}", produces = "application/json")
+    public ResponseEntity<Dependent> findOne(@PathVariable("id") int id) {
         try {
             var result = this.dependentsServices.findOne(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping(produces = "application/json")
@@ -46,19 +48,20 @@ import java.util.List;
         try {
             var result = this.dependentsServices.create(dependent);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
     @PutMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody Dependent dependent) {
 
-        try{
+        try {
             var updateDependent = this.dependentsServices.findOne(id);
 
-            if(updateDependent == null) {
+            if (updateDependent == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             updateDependent.setName(dependent.getName());
@@ -68,28 +71,30 @@ import java.util.List;
             dependentsServices.update(updateDependent);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
 
-        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") int id) throws SQLException{
+    public ResponseEntity<?> delete(@PathVariable("id") int id) throws SQLException {
 
-        try{
+        try {
             var existingDependent = this.dependentsServices.findOne(id);
-            if(existingDependent == null) {
+            if (existingDependent == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
             this.dependentsServices.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 }
