@@ -4,43 +4,46 @@ import com.example.dockercrudtorrexspring.lutris.Entities.Sector;
 import com.example.dockercrudtorrexspring.lutris.Repositories.DatabaseRepository;
 
 import java.security.NoSuchAlgorithmException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class SectorsServices {
 
-    DatabaseRepository databaseRepository;
+    Connection connection;
 
     public SectorsServices() throws NoSuchAlgorithmException {
-        databaseRepository = DatabaseRepository.getInstance();
+        connection = DatabaseRepository.getInstance().getConnection();
 
     }
 
     public Sector create(Sector sector) throws SQLException {
-        String sql = "insert into sectors (nameSector, launchDate) VALUES (?, GETDATE());";
-        PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
+        String sql = "INSERT INTO sectors (nameSector, launchDate) OUTPUT INSERTED.idSector, INSERTED.launchDate VALUES (?, GETDATE());";
+        PreparedStatement stm = this.connection.prepareStatement(sql);
         stm.setString(1, sector.getName());
 
-        int rowsInserted = stm.executeUpdate();
+        ResultSet resultSet = stm.executeQuery();
 
-        if(rowsInserted > 0) {
-            return new Sector(sector.getId(), sector.getName(), sector.getLaunchDate());
+        if (resultSet == null) {
+            return null;
         }
+        System.out.println("Sector inserted successfully...");
+        resultSet.next();
 
-        return sector;
+        int id = resultSet.getInt("idSector");
+        String date = resultSet.getString("launchDate");
+
+        return new Sector(id, sector.getName(), date);
+
     }
 
-    public ArrayList<Sector> getAll() throws SQLException{
+    public ArrayList<Sector> getAll() throws SQLException {
         ArrayList<Sector> sectors = new ArrayList<>();
 
         String sql = "SELECT * FROM sectors";
-        Statement statement = databaseRepository.getConnection().createStatement();
+        Statement statement = this.connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
-        while(resultSet.next()) {
+        while (resultSet.next()) {
             int id = resultSet.getInt("idSector");
             String name = resultSet.getString("nameSector");
             String launchDate = resultSet.getString("launchDate");
@@ -53,10 +56,10 @@ public class SectorsServices {
 
     public Sector findOne(int id) throws SQLException {
         String sql = "SELECT * FROM sectors WHERE idSector =" + id;
-        Statement statement = databaseRepository.getConnection().createStatement();
+        Statement statement = this.connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
-        if(!resultSet.next()){
+        if (!resultSet.next()) {
             return null;
         }
         int idU = resultSet.getInt("idSector");
@@ -67,14 +70,14 @@ public class SectorsServices {
     }
 
     public void update(Sector sector) throws SQLException {
-        String sql = "UPDATE sectors SET nameSector = " + " '" + sector.getName() + "' " +" WHERE idSector = " + sector.getId();
-        PreparedStatement stm = this.databaseRepository.getConnection().prepareStatement(sql);
+        String sql = "UPDATE sectors SET nameSector = " + " '" + sector.getName() + "' " + " WHERE idSector = " + sector.getId();
+        PreparedStatement stm = this.connection.prepareStatement(sql);
         stm.executeUpdate();
     }
 
-    public void delete(int id) throws SQLException{
+    public void delete(int id) throws SQLException {
         String sql = "DELETE FROM sectors WHERE idSector = " + id;
-        PreparedStatement stm = databaseRepository.getConnection().prepareStatement(sql);
+        PreparedStatement stm = this.connection.prepareStatement(sql);
         stm.executeUpdate();
     }
 
