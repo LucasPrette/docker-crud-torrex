@@ -5,4 +5,4 @@ CREATE TABLE dependents (
 	idEmployee INT NOT NULL
 );
 
-ALTER TABLE dependents ADD CONSTRAINT FK_Dependent_EmployeeID FOREIGN KEY (idEmployee) REFERENCES employees(idEmployee);
+ALTER TABLE dependents ADD CONSTRAINT FK_Dependent_EmployeeID FOREIGN KEY (idEmployee) REFERENCES employees(idEmployee) ON DELETE CASCADE;
