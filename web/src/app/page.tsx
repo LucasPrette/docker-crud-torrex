@@ -7,6 +7,8 @@ import CounterBox from "./_components/CounterBox";
 import { StatisticsCounter } from "~/api/statistics";
 import { ENTITIES_TYPES, type Entities } from "~/constants/entities";
 
+export const revalidate = 30 * 1000; // 30s
+
 const counterToBox = (counter: StatisticsCounter) => {
   const entries = Object.entries(counter);
   const result: [string, number][] = [];

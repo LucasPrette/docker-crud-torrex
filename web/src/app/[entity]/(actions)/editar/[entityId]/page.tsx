@@ -1,4 +1,4 @@
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 import { notFound } from "next/navigation";
 import { type ComponentType } from "react";
 import { PageParams } from "~/@types/router";
@@ -14,11 +14,13 @@ interface Params {
   entity: string;
 }
 
+export const dynamic = "force-dynamic";
+
 const FORMS: Record<Entities, ComponentType<FormProps<any>>> = {
-  employees: dynamic(() => import("../../_components/Forms/Employee")),
-  dependents: dynamic(() => import("../../_components/Forms/Dependent")),
-  sectors: dynamic(() => import("../../_components/Forms/Sector")),
-  units: dynamic(() => import("../../_components/Forms/Unit")),
+  employees: dynamicImport(() => import("../../_components/Forms/Employee")),
+  dependents: dynamicImport(() => import("../../_components/Forms/Dependent")),
+  sectors: dynamicImport(() => import("../../_components/Forms/Sector")),
+  units: dynamicImport(() => import("../../_components/Forms/Unit")),
 };
 
 async function Page({ params }: PageParams<Params>) {

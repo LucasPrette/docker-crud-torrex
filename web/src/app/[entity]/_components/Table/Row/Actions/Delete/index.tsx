@@ -5,6 +5,7 @@ import { Trash2 } from "lucide-react";
 import { Suspense, useState } from "react";
 import api from "~/api";
 import { Entities } from "~/constants/entities";
+import { useRouter } from "next/navigation";
 
 const Modal = dynamic(() => import("./Modal"), { ssr: false });
 
@@ -15,10 +16,15 @@ interface DeleteProps {
 
 function Delete({ domain, domainId }: DeleteProps) {
   const [isModalOpen, setModalOpen] = useState(false);
+  const router = useRouter();
 
   async function afterConfirm() {
-    api[domain].delete(domainId);
-    // await api[domain].delete(domainId);
+    try {
+      await api[domain].delete(domainId);
+      router.refresh();
+    } catch {
+      // do nothing
+    }
   }
 
   function onClose() {

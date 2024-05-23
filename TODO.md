@@ -1,0 +1,2 @@
+- arrumar .env dos projetos e docker
+- criar make file para subir docker-compose, migrations e seeds???

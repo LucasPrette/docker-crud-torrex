@@ -5,18 +5,40 @@ import Input from "../shared/Input";
 import Form from "../shared/Form";
 import Submit from "../shared/Submit";
 import GoBack from "../shared/GoBack";
+import { useForm } from "react-hook-form";
+import api from "~/api";
+import { useRouter } from "next/navigation";
 
 interface SectorFormProps extends FormProps<Sector> {}
 
 function SectorForm({ data }: SectorFormProps) {
+  const router = useRouter();
+  const { register, handleSubmit } = useForm<Sector>({
+    defaultValues: {
+      id: data?.id,
+      launchDate: data?.launchDate,
+      name: data?.name,
+    },
+    mode: "onBlur",
+    reValidateMode: "onBlur",
+  });
+
+  const onSubmit = async (formData: Sector) => {
+    try {
+      await api.sectors.update(formData.id, formData);
+      router.push("/setores");
+    } catch (err) {
+      console.log({ here: true, err });
+      // do nothing
+    }
+  };
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <Input
-        name="name"
         label="Nome"
-        onChange={() => {}}
         placeholder="Engenharia e Produto"
-        value=""
+        {...register("name")}
       />
       <div className="self-end flex gap-x-3">
         <GoBack />

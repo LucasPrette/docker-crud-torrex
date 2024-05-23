@@ -2,15 +2,15 @@ export interface Dependent {
   id: number;
   name: string;
   birth: string;
-  employeeId: number;
+  idEmployee: number;
 }
 
 export interface Employee {
   id: number;
   name: string;
   date: string;
-  sectorId: number;
-  unitId: number;
+  idSector: number;
+  idUnit: number;
 }
 
 export interface Sector {

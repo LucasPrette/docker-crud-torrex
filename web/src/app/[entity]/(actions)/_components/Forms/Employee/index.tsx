@@ -5,43 +5,44 @@ import Input from "../shared/Input";
 import Form from "../shared/Form";
 import Submit from "../shared/Submit";
 import GoBack from "../shared/GoBack";
+import { useForm } from "react-hook-form";
 
 interface EmployeeFormProps extends FormProps<Employee> {}
 
 function EmployeeForm({ data }: EmployeeFormProps) {
+  const { register } = useForm<Employee>({
+    defaultValues: {
+      name: data?.name,
+      date: data?.date,
+      idUnit: data?.idUnit,
+      idSector: data?.idSector,
+      id: data?.id,
+    },
+    mode: "onBlur",
+    reValidateMode: "onBlur",
+  });
+
   return (
     <Form>
+      <Input label="Nome" placeholder="John Doe" {...register("name")} />
       <Input
-        name="name"
-        label="Nome"
-        onChange={() => {}}
-        placeholder="John Doe"
-        value=""
-      />
-      <Input
-        name="date"
         label="Data de nascimento"
-        onChange={() => {}}
         placeholder="18/11/2000"
         type="date"
-        value=""
+        {...register("date")}
       />
       <div className="flex items-center gap-x-4">
         <Input
-          name="sectorId"
           label="ID do setor"
-          onChange={() => {}}
           placeholder="131231"
           type="number"
-          value=""
+          {...register("idSector")}
         />
         <Input
-          name="unitId"
           label="ID da unidade"
-          onChange={() => {}}
           placeholder="131231"
           type="number"
-          value=""
+          {...register("idUnit")}
         />
       </div>
       <div className="self-end flex gap-x-3">

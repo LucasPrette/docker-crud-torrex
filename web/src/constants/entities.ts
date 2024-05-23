@@ -65,7 +65,7 @@ export const FORMATTERS = {
 };
 
 const DEPENDENT_META: EntityMeta<keyof Dependent> = {
-  columns: ["id", "name", "birth", "employeeId"],
+  columns: ["id", "name", "birth"],
   domain: "dependents",
   translatedColumns: ["ID", "Nome", "Aniversário"],
   icon: Baby,

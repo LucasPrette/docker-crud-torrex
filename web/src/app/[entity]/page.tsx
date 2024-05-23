@@ -11,6 +11,8 @@ interface Params {
   entity: string;
 }
 
+export const dynamic = "force-dynamic";
+
 const objToTableRow = <T extends object>(
   data: T,
   order: string[]
