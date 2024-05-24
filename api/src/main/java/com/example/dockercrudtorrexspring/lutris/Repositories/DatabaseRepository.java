@@ -31,7 +31,9 @@ public final class DatabaseRepository {
             //provide java database driver
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
-            String connectionUrl = dotenv.get("DATABASE_URL");
+            // String connectionUrl = dotenv.get("DATABASE_URL");
+            String connectionUrl = System.getenv("DATABASE_URL");
+            
             connection = DriverManager.getConnection(connectionUrl);
 
             this.connection = connection;

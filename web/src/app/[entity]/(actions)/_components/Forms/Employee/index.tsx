@@ -6,11 +6,14 @@ import Form from "../shared/Form";
 import Submit from "../shared/Submit";
 import GoBack from "../shared/GoBack";
 import { useForm } from "react-hook-form";
+import api from "~/api";
+import { useRouter } from "next/navigation";
 
 interface EmployeeFormProps extends FormProps<Employee> {}
 
 function EmployeeForm({ data }: EmployeeFormProps) {
-  const { register } = useForm<Employee>({
+  const router = useRouter();
+  const { register, handleSubmit } = useForm<Employee>({
     defaultValues: {
       name: data?.name,
       date: data?.date,
@@ -22,8 +25,24 @@ function EmployeeForm({ data }: EmployeeFormProps) {
     reValidateMode: "onBlur",
   });
 
+  const onSubmit = async (formData: Employee) => {
+    try {
+      if (data) {
+        await api.employees.update(formData.id, formData);
+      } else {
+        await api.employees.create(formData);
+      }
+
+      router.push("/colaboradores");
+      router.refresh();
+    } catch (err) {
+      console.log({ here: true, err });
+      // do nothing
+    }
+  };
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <Input label="Nome" placeholder="John Doe" {...register("name")} />
       <Input
         label="Data de nascimento"

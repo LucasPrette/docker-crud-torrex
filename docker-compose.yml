@@ -7,7 +7,8 @@ services:
     ports:
       - "1433:1433"
     volumes:
-      - lutris:/var/opt/mssql
+      # - lutris:/var/opt/mssql
+      - lutris:/app
       - ./api/src/sql:/tmp
     environment:
       MSSQL_SA_PASSWORD: yourStrong(!)Password
@@ -26,6 +27,10 @@ services:
       - lutris-net
     depends_on:
       - db
+    links:
+      - db:lutris-db
+    environment:
+      DATABASE_URL: jdbc:sqlserver://host.docker.internal:1433;database=lutris;user=sa;password=yourStrong(!)Password;encrypt=true;trustServerCertificate=true;loginTimeout=30;
 
   web:
     container_name: lutris-web
@@ -36,6 +41,10 @@ services:
       - "3000:3000"
     depends_on:
       - api
+    links:
+      - api:lutris-api
+    # environment:
+    #   NEXT_PUBLIC_API_URL: http://host.docker.internal:8080
     networks:
       - lutris-net
 

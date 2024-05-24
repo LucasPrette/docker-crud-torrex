@@ -1,16 +1,19 @@
 "use client";
 import type { Unit } from "~/@types/entities";
-import type { FormProps } from "../shared/types";
+import { FormProps } from "../shared/types";
 import Input from "../shared/Input";
 import Form from "../shared/Form";
 import Submit from "../shared/Submit";
 import GoBack from "../shared/GoBack";
 import { useForm } from "react-hook-form";
+import api from "~/api";
+import { useRouter } from "next/navigation";
 
 interface UnitFormProps extends FormProps<Unit> {}
 
 function UnitForm({ data }: UnitFormProps) {
-  const { register } = useForm<Unit>({
+  const router = useRouter();
+  const { register, handleSubmit } = useForm<Unit>({
     defaultValues: {
       id: data?.id,
       launchDate: data?.launchDate,
@@ -20,20 +23,34 @@ function UnitForm({ data }: UnitFormProps) {
     reValidateMode: "onBlur",
   });
 
+  const onSubmit = async (formData: Unit) => {
+    try {
+      console.log({ formData, data });
+      if (data) {
+        api.units.update(formData.id, formData);
+      } else {
+        api.units.create(formData);
+      }
+
+      router.push("/unidades");
+      router.refresh();
+    } catch {
+      // do nothing
+    }
+  };
+
   return (
-    <>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <Input
         label="Nome"
-        name="test"
-        onChange={() => {}}
         placeholder="Matriz Bauru, SP"
-        // {...register("name")}
+        {...register("name")}
       />
-      {/* <div className="self-end flex gap-x-3">
+      <div className="self-end flex gap-x-3">
         <GoBack />
         <Submit type={data ? "update" : "create"} />
-      </div> */}
-    </>
+      </div>
+    </Form>
   );
 }
 

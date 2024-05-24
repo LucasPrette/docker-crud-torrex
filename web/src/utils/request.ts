@@ -17,9 +17,9 @@ async function requester<T>({
   method,
   body,
 }: RequesterInput): Promise<T> {
-  // TODO: fix it
   const url = "http://192.168.3.31:8080" + endpoint;
-  // const url = process.env.API_URL + endpoint;
+  // const url = process.env.NEXT_PUBLIC_API_URL + endpoint;
+  console.log({ url, endpoint });
   const headers = new Headers();
   const fetchArgs: RequestInit = {
     method,

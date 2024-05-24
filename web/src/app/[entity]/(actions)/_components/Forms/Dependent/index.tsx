@@ -6,11 +6,14 @@ import Form from "../shared/Form";
 import Submit from "../shared/Submit";
 import GoBack from "../shared/GoBack";
 import { useForm } from "react-hook-form";
+import api from "~/api";
+import { useRouter } from "next/navigation";
 
 interface DependentFormProps extends FormProps<Dependent> {}
 
 function DependentForm({ data }: DependentFormProps) {
-  const { register } = useForm<Dependent>({
+  const router = useRouter();
+  const { register, handleSubmit } = useForm<Dependent>({
     defaultValues: {
       birth: data?.birth,
       idEmployee: data?.idEmployee,
@@ -21,8 +24,24 @@ function DependentForm({ data }: DependentFormProps) {
     reValidateMode: "onBlur",
   });
 
+  const onSubmit = async (formData: Dependent) => {
+    try {
+      if (data) {
+        await api.dependents.update(formData.id, formData);
+      } else {
+        await api.dependents.create(formData);
+      }
+
+      router.push("/dependentes");
+      router.refresh();
+    } catch (err) {
+      console.log({ here: true, err });
+      // do nothing
+    }
+  };
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <Input label="Nome" placeholder="John Doe" {...register("name")} />
       <div className="flex items-center gap-x-4">
         <Input

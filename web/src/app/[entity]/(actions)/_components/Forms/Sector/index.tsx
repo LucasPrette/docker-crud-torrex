@@ -25,8 +25,14 @@ function SectorForm({ data }: SectorFormProps) {
 
   const onSubmit = async (formData: Sector) => {
     try {
-      await api.sectors.update(formData.id, formData);
+      if (data) {
+        await api.sectors.update(formData.id, formData);
+      } else {
+        await api.sectors.create(formData);
+      }
+
       router.push("/setores");
+      router.refresh();
     } catch (err) {
       console.log({ here: true, err });
       // do nothing
