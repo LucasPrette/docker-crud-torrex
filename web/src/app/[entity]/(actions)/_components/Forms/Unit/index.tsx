@@ -25,7 +25,6 @@ function UnitForm({ data }: UnitFormProps) {
 
   const onSubmit = async (formData: Unit) => {
     try {
-      console.log({ formData, data });
       if (data) {
         api.units.update(formData.id, formData);
       } else {

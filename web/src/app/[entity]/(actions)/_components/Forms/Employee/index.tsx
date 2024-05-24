@@ -36,7 +36,6 @@ function EmployeeForm({ data }: EmployeeFormProps) {
       router.push("/colaboradores");
       router.refresh();
     } catch (err) {
-      console.log({ here: true, err });
       // do nothing
     }
   };

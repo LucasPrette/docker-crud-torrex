@@ -35,7 +35,6 @@ function DependentForm({ data }: DependentFormProps) {
       router.push("/dependentes");
       router.refresh();
     } catch (err) {
-      console.log({ here: true, err });
       // do nothing
     }
   };

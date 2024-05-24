@@ -34,7 +34,6 @@ function SectorForm({ data }: SectorFormProps) {
       router.push("/setores");
       router.refresh();
     } catch (err) {
-      console.log({ here: true, err });
       // do nothing
     }
   };
