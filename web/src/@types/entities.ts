@@ -10,6 +10,7 @@ export interface Employee {
   name: string;
   date: string;
   idSector: number;
+  idImage: string | null;
   idUnit: number;
 }
 
