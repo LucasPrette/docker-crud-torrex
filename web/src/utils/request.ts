@@ -5,7 +5,7 @@ type Body = Record<string, unknown>;
 interface RequesterInput {
   endpoint: string;
   method: HttpMethods;
-  body?: Body;
+  body?: Body | FormData;
 }
 
 type Requester =
@@ -17,7 +17,7 @@ async function requester<T>({
   method,
   body,
 }: RequesterInput): Promise<T> {
-  const url = "http://192.168.3.31:8080" + endpoint;
+  const url = "http://192.168.6.197:8080" + endpoint;
   // const url = process.env.NEXT_PUBLIC_API_URL + endpoint;
   const headers = new Headers();
   const fetchArgs: RequestInit = {
@@ -28,7 +28,11 @@ async function requester<T>({
 
   try {
     if (body) {
-      headers.append("Content-Type", "application/json");
+      if (body instanceof FormData) {
+        headers.append("Content-Type", "multipart/form-data");
+      } else {
+        headers.append("Content-Type", "application/json");
+      }
 
       fetchArgs.body = JSON.stringify(body);
       fetchArgs.headers = headers;
@@ -55,9 +59,9 @@ async function requester<T>({
 
 const request = {
   get: <T>(endpoint: string) => requester<T>({ endpoint, method: "GET" }),
-  post: <T>(endpoint: string, data: Body) =>
+  post: <T>(endpoint: string, data: Body | FormData) =>
     requester<T>({ endpoint, method: "POST", body: data }),
-  put: <T>(endpoint: string, data: Body) =>
+  put: <T>(endpoint: string, data: Body | FormData) =>
     requester<T>({ endpoint, method: "PUT", body: data }),
   delete: async <T>(endpoint: string) =>
     requester<T>({ endpoint, method: "DELETE" }),

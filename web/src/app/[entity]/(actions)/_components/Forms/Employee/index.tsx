@@ -8,17 +8,27 @@ import GoBack from "../shared/GoBack";
 import { useForm } from "react-hook-form";
 import api from "~/api";
 import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import dynamic from "next/dynamic";
+import { User } from "lucide-react";
+
+const Modal = dynamic(() => import("./ImagaUploadModal"), { ssr: false });
 
 interface EmployeeFormProps extends FormProps<Employee> {}
 
+const formatImage = (idImage: string) => idImage;
+
 function EmployeeForm({ data }: EmployeeFormProps) {
   const router = useRouter();
-  const { register, handleSubmit } = useForm<Employee>({
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState(data?.idImage || "");
+  const { register, handleSubmit, setValue } = useForm<Employee>({
     defaultValues: {
       name: data?.name,
       date: data?.date,
       idUnit: data?.idUnit,
       idSector: data?.idSector,
+      idImage: data?.idImage,
       id: data?.id,
     },
     mode: "onBlur",
@@ -40,34 +50,64 @@ function EmployeeForm({ data }: EmployeeFormProps) {
     }
   };
 
+  function onClose() {
+    setModalOpen(false);
+  }
+
+  function onUpload(idImage: string) {
+    setAvatarUrl(formatImage(idImage));
+    setValue("idImage", idImage);
+  }
+
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <Input label="Nome" placeholder="John Doe" {...register("name")} />
-      <Input
-        label="Data de nascimento"
-        placeholder="18/11/2000"
-        type="date"
-        {...register("date")}
-      />
-      <div className="flex items-center gap-x-4">
-        <Input
-          label="ID do setor"
-          placeholder="131231"
-          type="number"
-          {...register("idSector")}
-        />
-        <Input
-          label="ID da unidade"
-          placeholder="131231"
-          type="number"
-          {...register("idUnit")}
-        />
+    <>
+      {isModalOpen && (
+        <Suspense>
+          <Modal onUpload={onUpload} onClose={onClose} />
+        </Suspense>
+      )}
+      <div className="p-4 bg-emerald-600 rounded-full">
+        {avatarUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={avatarUrl}
+            alt="Avatar do usuário"
+            height={20}
+            width={20}
+            className="rounded-full"
+          />
+        ) : (
+          <User size="20" />
+        )}
       </div>
-      <div className="self-end flex gap-x-3">
-        <GoBack />
-        <Submit type={data ? "update" : "create"} />
-      </div>
-    </Form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Input label="Nome" placeholder="John Doe" {...register("name")} />
+        <Input
+          label="Data de nascimento"
+          placeholder="18/11/2000"
+          type="date"
+          {...register("date")}
+        />
+        <div className="flex items-center gap-x-4">
+          <Input
+            label="ID do setor"
+            placeholder="131231"
+            type="number"
+            {...register("idSector")}
+          />
+          <Input
+            label="ID da unidade"
+            placeholder="131231"
+            type="number"
+            {...register("idUnit")}
+          />
+        </div>
+        <div className="self-end flex gap-x-3">
+          <GoBack />
+          <Submit type={data ? "update" : "create"} />
+        </div>
+      </Form>
+    </>
   );
 }
 
