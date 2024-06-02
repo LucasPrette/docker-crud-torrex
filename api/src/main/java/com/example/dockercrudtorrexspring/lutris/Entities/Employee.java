@@ -6,6 +6,7 @@ public class Employee {
     private String date;
     private int idSector;
     private int idUnit;
+    private int idImage;
 
     public Employee() {
 
@@ -26,6 +27,26 @@ public class Employee {
         this.idSector = idSector;
         this.idUnit = idUnit;
     }
+
+    public Employee
+            (
+                    int id,
+                    String name,
+                    String date,
+                    int idSector,
+                    int idUnit,
+                    int idImage
+            )
+    {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.idSector = idSector;
+        this.idUnit = idUnit;
+        this.idImage = idImage;
+    }
+
+
 
     public int getId() {
         return this.id;
@@ -65,5 +86,13 @@ public class Employee {
 
     public void setIdUnit(int idUnit) {
         this.idUnit = idUnit;
+    }
+
+    public int getIdImage() {
+        return this.idImage;
+    }
+
+    public void setIdImage(int idImage) {
+        this.idImage = idImage;
     }
 }

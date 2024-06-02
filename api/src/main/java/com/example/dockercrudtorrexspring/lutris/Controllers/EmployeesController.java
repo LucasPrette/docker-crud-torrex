@@ -4,9 +4,9 @@ import com.example.dockercrudtorrexspring.lutris.Entities.Employee;
 import com.example.dockercrudtorrexspring.lutris.Services.EmployeesServices;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,9 +34,8 @@ public class EmployeesController {
 
     @GetMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<Employee> findOne(@PathVariable("id") int id) {
-        Employee result = null;
         try {
-            result = this.employeesServices.findOne(id);
+            var result = this.employeesServices.findOne(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,4 +92,32 @@ public class EmployeesController {
 
 
     }
+
+    @PutMapping(path = "/{id}/images", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<?> addImage
+            (
+            @PathVariable("id") int id,
+            @RequestPart MultipartFile file
+            )
+    {
+
+        try{
+            var result = employeesServices.findOne(id);
+            if(result == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            if(file.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+            employeesServices.saveImage(file, String.valueOf(id));
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

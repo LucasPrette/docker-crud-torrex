@@ -2,7 +2,12 @@ package com.example.dockercrudtorrexspring.lutris.Services;
 
 import com.example.dockercrudtorrexspring.lutris.Entities.Employee;
 import com.example.dockercrudtorrexspring.lutris.Repositories.DatabaseRepository;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -53,8 +58,9 @@ public class EmployeesServices {
             String birth = resultSet.getString("birth");
             int idSector = resultSet.getInt("idSector");
             int idUnit = resultSet.getInt("idUnit");
+            int idImage = resultSet.getInt("idImage");
 
-            employees.add(new Employee(idE, name, birth, idSector, idUnit));
+            employees.add(new Employee(idE, name, birth, idSector, idUnit, idImage));
         }
 
         return employees;
@@ -73,8 +79,9 @@ public class EmployeesServices {
         String birth = resultSet.getString("birth");
         int idSector = resultSet.getInt("idSector");
         int idUnit = resultSet.getInt("idUnit");
+        int idImage = resultSet.getInt("idImage");
 
-        return new Employee(idE, name, birth, idSector, idUnit);
+        return new Employee(idE, name, birth, idSector, idUnit, idImage);
     }
 
     public void update(Employee employee) throws SQLException {
@@ -88,10 +95,34 @@ public class EmployeesServices {
 
     }
 
-    public void delete(int id) throws SQLException {
+    public void delete(int id) throws SQLException, IOException {
         String sql = "DELETE FROM employees WHERE idEmployee = " + id;
+        PreparedStatement stm = this.connection.prepareStatement(sql);
+        deleteImage(String.valueOf(id) + ".jpg");
+
+        stm.executeUpdate();
+    }
+
+    public void saveImage(MultipartFile image, String idEmp) throws IOException, SQLException {
+        String uniqueFileName = idEmp + ".jpg";
+        Path uploadPath = Path.of("api\\src\\main\\resources\\Images");
+        Path filePath = uploadPath.resolve(uniqueFileName);
+
+        Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        String sql = "UPDATE employees SET idImage = " + idEmp + "WHERE idEmployee =" + idEmp;
         PreparedStatement stm = this.connection.prepareStatement(sql);
 
         stm.executeUpdate();
+    }
+
+    public void deleteImage(String imageName) throws IOException {
+
+        Path imagePath = Path.of("api\\src\\main\\resources\\Images", imageName);
+
+        if(Files.exists(imagePath)) {
+            Files.delete(imagePath);
+        }
+
     }
 }
