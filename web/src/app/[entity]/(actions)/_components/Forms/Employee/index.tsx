@@ -12,23 +12,28 @@ import { Suspense, useState } from "react";
 import dynamic from "next/dynamic";
 import { User } from "lucide-react";
 
-const Modal = dynamic(() => import("./ImagaUploadModal"), { ssr: false });
+const Modal = dynamic(() => import("./ImageUploadModal"), { ssr: false });
 
 interface EmployeeFormProps extends FormProps<Employee> {}
 
-const formatImage = (idImage: string) => idImage;
+const formatImage = (imageId: number) => "http://192.168.6.197:8080" + imageId;
 
 function EmployeeForm({ data }: EmployeeFormProps) {
   const router = useRouter();
   const [isModalOpen, setModalOpen] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState(data?.idImage || "");
-  const { register, handleSubmit, setValue } = useForm<Employee>({
+  const [avatarUrl, setAvatarUrl] = useState(() => {
+    if (!data?.idImage) {
+      return "";
+    }
+
+    return formatImage(data.id);
+  });
+  const { register, handleSubmit } = useForm<Employee>({
     defaultValues: {
       name: data?.name,
       date: data?.date,
       idUnit: data?.idUnit,
       idSector: data?.idSector,
-      idImage: data?.idImage,
       id: data?.id,
     },
     mode: "onBlur",
@@ -54,16 +59,15 @@ function EmployeeForm({ data }: EmployeeFormProps) {
     setModalOpen(false);
   }
 
-  function onUpload(idImage: string) {
-    setAvatarUrl(formatImage(idImage));
-    setValue("idImage", idImage);
+  function onUpload() {
+    setAvatarUrl(formatImage(data!.id));
   }
 
   return (
     <>
       {isModalOpen && (
         <Suspense>
-          <Modal onUpload={onUpload} onClose={onClose} />
+          <Modal employeeId={data!.id} onUpload={onUpload} onClose={onClose} />
         </Suspense>
       )}
       <div className="p-4 bg-emerald-600 rounded-full">

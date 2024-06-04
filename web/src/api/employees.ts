@@ -4,10 +4,22 @@ import type { Optional } from "~/@types/utils";
 
 type UpInsertEmployee = Omit<Employee, "id" | "date">;
 
+type UploadImage = {
+  employeeId: number;
+  image: File;
+};
+
 const endpoints = {
   create: (data: UpInsertEmployee) =>
     request.post<Employee>("/employees", data),
   findAll: () => request.get<Employee[]>("/employees"),
+  upload: ({ employeeId, image }: UploadImage) => {
+    const formData = new FormData();
+
+    formData.append("image", image);
+
+    return request.post(`/employees/${employeeId}/images`, formData);
+  },
   findById: (id: number) => request.get<Optional<Employee>>(`/employees/${id}`),
   update: (id: number, data: UpInsertEmployee) =>
     request.put<Employee>(`/employees/${id}`, data),

@@ -2,19 +2,17 @@ import { type ChangeEvent, useRef, useState } from "react";
 import api from "~/api";
 
 interface ImageUploadModalProps {
-  onUpload: (idImage: string) => void;
+  employeeId: number;
+  onUpload: () => void;
   onClose: () => void;
 }
 
-function ImageUploadModal({ onUpload, onClose }: ImageUploadModalProps) {
+function ImageUploadModal({
+  employeeId,
+  onUpload,
+  onClose,
+}: ImageUploadModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const [image, setImage] = useState<File | null>(null);
-
-  async function onUploadHandler() {
-    if (!image) {
-      return;
-    }
-  }
 
   async function onSelectFile(event: ChangeEvent<HTMLInputElement>) {
     const { files } = event.target;
@@ -25,9 +23,9 @@ function ImageUploadModal({ onUpload, onClose }: ImageUploadModalProps) {
 
     const image = files[0];
 
-    const { idImage } = await api.images.upload({ image });
+    await api.employees.upload({ employeeId, image });
 
-    onUpload(idImage);
+    onUpload();
     onClose();
   }
 

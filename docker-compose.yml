@@ -23,6 +23,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    volumes:
+      - ./api/src/main/resources/Images
     networks:
       - lutris-net
     depends_on:
