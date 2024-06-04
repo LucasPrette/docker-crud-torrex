@@ -24,18 +24,18 @@ VALUES
     ('Porto Alegre', '2009-07-02'),
     ('Manaus', '2012-11-22');
 
-INSERT INTO employees (nameEmployee, birth, idSector, idUnit)
+INSERT INTO employees (nameEmployee, birth, idSector, idUnit, idImage)
 VALUES 
-    ('João Silva', '1980-05-20', 1, 1),
-    ('Maria Santos', '1985-10-12', 2, 2),
-    ('Pedro Oliveira', '1990-03-25', 3, 3),
-    ('Ana Costa', '1988-07-30', 4, 4),
-    ('Carlos Souza', '1983-01-15', 5, 5),
-    ('Fernanda Pereira', '1987-04-18', 6, 6),
-    ('Rafaela Almeida', '1992-09-05', 7, 7),
-    ('Lucas Fernandes', '1982-12-10', 8, 8),
-    ('Juliana Lima', '1989-06-08', 9, 9),
-    ('Gabriel Martins', '1995-08-03', 10, 10);
+    ('João Silva', '1980-05-20', 1, 1, 1),
+    ('Maria Santos', '1985-10-12', 2, 2, 2),
+    ('Pedro Oliveira', '1990-03-25', 3, 3, 3),
+    ('Ana Costa', '1988-07-30', 4, 4, 4),
+    ('Carlos Souza', '1983-01-15', 5, 5, 5),
+    ('Fernanda Pereira', '1987-04-18', 6, 6, 6),
+    ('Rafaela Almeida', '1992-09-05', 7, 7, 7),
+    ('Lucas Fernandes', '1982-12-10', 8, 8, 8),
+    ('Juliana Lima', '1989-06-08', 9, 9, 9),
+    ('Gabriel Martins', '1995-08-03', 10, 10, 10);
 
 
 INSERT INTO dependents (nameDependent, birth, idEmployee)
