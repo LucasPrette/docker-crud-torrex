@@ -17,7 +17,7 @@ async function requester<T>({
   method,
   body,
 }: RequesterInput): Promise<T> {
-  const url = "http://192.168.6.197:8080" + endpoint;
+  const url = "http://192.168.7.3:8080" + endpoint;
   // const url = process.env.NEXT_PUBLIC_API_URL + endpoint;
   const headers = new Headers();
   const fetchArgs: RequestInit = {
@@ -29,12 +29,13 @@ async function requester<T>({
   try {
     if (body) {
       if (body instanceof FormData) {
-        headers.append("Content-Type", "multipart/form-data");
+        // headers.append("Content-Type", "multipart/form-data");
+        fetchArgs.body = body;
       } else {
         headers.append("Content-Type", "application/json");
+        fetchArgs.body = JSON.stringify(body);
       }
 
-      fetchArgs.body = JSON.stringify(body);
       fetchArgs.headers = headers;
     }
 

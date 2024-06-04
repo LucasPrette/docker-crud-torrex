@@ -103,6 +103,7 @@ public class EmployeesController {
 
         try{
             var result = employeesServices.findOne(id);
+            
             if(result == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

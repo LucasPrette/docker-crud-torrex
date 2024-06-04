@@ -98,14 +98,14 @@ public class EmployeesServices {
     public void delete(int id) throws SQLException, IOException {
         String sql = "DELETE FROM employees WHERE idEmployee = " + id;
         PreparedStatement stm = this.connection.prepareStatement(sql);
-        deleteImage(String.valueOf(id) + ".jpg");
+        deleteImage(String.valueOf(id) + ".jpeg");
 
         stm.executeUpdate();
     }
 
     public void saveImage(MultipartFile image, String idEmp) throws IOException, SQLException {
-        String uniqueFileName = idEmp + ".jpg";
-        Path uploadPath = Path.of("api\\src\\main\\resources\\Images");
+        String uniqueFileName = idEmp + ".jpeg";
+        Path uploadPath = Path.of("src/main/resources/Images");
         Path filePath = uploadPath.resolve(uniqueFileName);
 
         Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
@@ -118,7 +118,7 @@ public class EmployeesServices {
 
     public void deleteImage(String imageName) throws IOException {
 
-        Path imagePath = Path.of("api\\src\\main\\resources\\Images", imageName);
+        Path imagePath = Path.of("src/main/resources/Images", imageName);
 
         if(Files.exists(imagePath)) {
             Files.delete(imagePath);

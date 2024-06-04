@@ -16,7 +16,8 @@ const Modal = dynamic(() => import("./ImageUploadModal"), { ssr: false });
 
 interface EmployeeFormProps extends FormProps<Employee> {}
 
-const formatImage = (imageId: number) => "http://192.168.6.197:8080" + imageId;
+const formatImage = (imageId: number) =>
+  `http://192.168.7.3:8080/${imageId}.jpeg`;
 
 function EmployeeForm({ data }: EmployeeFormProps) {
   const router = useRouter();
@@ -70,21 +71,35 @@ function EmployeeForm({ data }: EmployeeFormProps) {
           <Modal employeeId={data!.id} onUpload={onUpload} onClose={onClose} />
         </Suspense>
       )}
-      <div className="p-4 bg-emerald-600 rounded-full">
-        {avatarUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={avatarUrl}
-            alt="Avatar do usuário"
-            height={20}
-            width={20}
-            className="rounded-full"
-          />
-        ) : (
-          <User size="20" />
-        )}
-      </div>
       <Form onSubmit={handleSubmit(onSubmit)}>
+        {data && (
+          <div className="flex items-center">
+            <div className="p-1 bg-emerald-600 rounded-full">
+              {avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={avatarUrl}
+                  alt="Avatar do usuário"
+                  height={52}
+                  width={52}
+                  className="rounded-full"
+                />
+              ) : (
+                <User size="52" />
+              )}
+            </div>
+            <button
+              className="ml-3 px-6 py-3 transition-all duration-300 border border-emerald-600 text-emerald-600 hover:text-gray-200 text-sm hover:bg-emerald-600 rounded-md"
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                setModalOpen(true);
+              }}
+            >
+              Avatar
+            </button>
+          </div>
+        )}
         <Input label="Nome" placeholder="John Doe" {...register("name")} />
         <Input
           label="Data de nascimento"

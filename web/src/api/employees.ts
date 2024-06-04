@@ -16,9 +16,9 @@ const endpoints = {
   upload: ({ employeeId, image }: UploadImage) => {
     const formData = new FormData();
 
-    formData.append("image", image);
+    formData.append("file", image);
 
-    return request.post(`/employees/${employeeId}/images`, formData);
+    return request.put(`/employees/${employeeId}/images`, formData);
   },
   findById: (id: number) => request.get<Optional<Employee>>(`/employees/${id}`),
   update: (id: number, data: UpInsertEmployee) =>

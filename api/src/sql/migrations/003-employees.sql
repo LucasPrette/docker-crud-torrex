@@ -1,7 +1,7 @@
 CREATE TABLE employees (
 	idEmployee INT PRIMARY KEY IDENTITY(1,1),
 	nameEmployee VARCHAR(40) NOT NULL,
-	birth date NOT NULL,
+	birth DATE NOT NULL,
 	idSector INT, 
 	idUnit INT
 );

@@ -1,1 +1,1 @@
-ALTER TABLE employees ADD COLUMN idImage INT DEFAULT NULL;
+ALTER TABLE employees ADD idImage INT NULL;
